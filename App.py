@@ -4,11 +4,11 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.embeddings import HuggingFaceEmbeddings
 from langchain.vectorstores import FAISS
 from transformers import pipeline
-import os
 
 # === Configuration ===
 FAQ_FILE = "faq.txt"
-MODEL_NAME = "google/flan-t5-base"
+GENERATION_MODEL = "google/flan-t5-base"
+EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
 CHUNK_SIZE = 300
 CHUNK_OVERLAP = 50
 MAX_RESPONSE_LEN = 256
@@ -24,13 +24,13 @@ def load_docs():
 # === Create Vector Store ===
 @st.cache_resource
 def create_vector_store(docs):
-    embeddings = HuggingFaceEmbeddings()
+    embeddings = HuggingFaceEmbeddings(model_name=EMBEDDING_MODEL)
     return FAISS.from_documents(docs, embeddings)
 
 # === Load Model Pipeline ===
 @st.cache_resource
 def load_model():
-    return pipeline("text2text-generation", model=MODEL_NAME)
+    return pipeline("text2text-generation", model=GENERATION_MODEL)
 
 # === Generate answer ===
 def get_answer(query, retriever, generator):
