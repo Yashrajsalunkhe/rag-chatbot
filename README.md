@@ -9,25 +9,29 @@ A Retrieval-Augmented Generation (RAG) based chatbot built with Python, LangChai
 - Loads data from `.txt` file (`faq.txt`)
 - Uses LangChain's RAG pipeline for intelligent responses
 - Vector similarity search using FAISS
-- Embeddings from `sentence-transformers`
+- Embeddings from `sentence-transformers/all-MiniLM-L6-v2`
 - Powered by HuggingFace's `flan-t5-base` model (No OpenAI key required)
+- Resource caching with Streamlit's `@st.cache_resource` for faster loading
+- Handles file paths dynamically for portability
 - Optional: Deployable on **Streamlit**
-- Environment variables managed securely using `.env`
+
+---
+
+## 🌐 Hosted Demo
+
+Try the chatbot live at:  
+**https://rag-chatbot-2cub3ctpot7xzimtgdrimr.streamlit.app/**
 
 ---
 
 ## 📁 Project Structure
 
     rag-chatbot/
-    ├── app.py # Main Streamlit app
-    ├── chatbot.py # Core chatbot logic (embedding, retriever, LLM)
-    ├── faq.txt # Source data (knowledge base)
-    ├── responses.txt # Sample Q&A responses
-    ├── .env.example # Template for environment variables
-    ├── .gitignore # Prevents secret files from being tracked
-    ├── requirements.txt # Python dependencies
-    └── README.md # Project documentation
-
+    ├── app.py            # Main Streamlit app with caching and improved file handling
+    ├── faq.txt           # Source data (knowledge base)
+    ├── requirements.txt  # Python dependencies
+    ├── .gitignore        # Prevents secret files from being tracked
+    └── README.md         # Project documentation
 
 ---
 
@@ -42,38 +46,33 @@ A Retrieval-Augmented Generation (RAG) based chatbot built with Python, LangChai
 
 2. **Create and activate a virtual environment**
 
-    python -m venv venv
-    source venv/bin/activate  # or venv\Scripts\activate on Windows
+        python -m venv venv
+        source venv/bin/activate  # or venv\Scripts\activate on Windows
 
 3. **Install dependencies**
 
-    pip install -r requirements.txt
+        pip install -r requirements.txt
 
-4. **Create a .env file**
+4. **Run the chatbot**
 
-    HUGGINGFACEHUB_API_TOKEN=your_huggingface_token_here
-
-5. **Run the chatbot in terminal**
-
-    python app.py
+        python app.py
 
 
 🌐 Deploy on Streamlit
 
-1. **Install Streamlit and pyngrok (if not already):**
+1. **Install Streamlit (and optionally pyngrok)**
 
-    pip install streamlit pyngrok
+        pip install streamlit pyngrok
 
-2. **Run the app:**
+2. **Run the app**
 
-    streamlit run app.py
+        streamlit run app.py
 
-3. **Use ngrok for public URL in Colab or remote:**
+3. **Use ngrok for public URL in Colab or remote environments**
 
-    from pyngrok import ngrok
-    ngrok.set_auth_token("your-ngrok-token")
-    print(ngrok.connect(8501))
-
+        from pyngrok import ngrok
+        ngrok.set_auth_token("your-ngrok-token")
+        print(ngrok.connect(8501))
 
 
 📄 Sample Questions and Responses
@@ -81,30 +80,33 @@ A Retrieval-Augmented Generation (RAG) based chatbot built with Python, LangChai
 See the faq.txt file for example interactions with the chatbot.
 
 
-
 🛠️ Tech Stack
 
-    Python
-
-    LangChain
-
-    HuggingFace Transformers
-
-    FAISS (for vector storage)
-
-    Streamlit (UI deployment)
-
-    Pyngrok (optional, for Colab/public URL)
-
+        Python
+    
+        LangChain
+    
+        HuggingFace Transformers
+    
+        FAISS (for vector storage)
+    
+        Streamlit (UI deployment)
+    
+        Pyngrok (optional, for Colab/public URL)
 
 🧠 References
 
-    LangChain Documentation
-
-    HuggingFace Hub
-
-    FAISS Documentation
+        LangChain Documentation
+    
+        HuggingFace Hub
+    
+        FAISS Documentation
 
 👨‍💻 Author
 
 Made by Yashraj Salunkhe. Feel free to reach out for any questions!
+
+
+---
+
+Let me know if you'd like me to generate a `requirements.txt` or anything else!
