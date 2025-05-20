@@ -5,34 +5,33 @@ from langchain.embeddings import HuggingFaceEmbeddings
 from langchain.vectorstores import FAISS
 from transformers import pipeline
 
-# === Configuration ===
+# === Constants ===
 FAQ_FILE = "faq.txt"
-GENERATION_MODEL = "google/flan-t5-base"
-EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
+MODEL_NAME = "google/flan-t5-base"
 CHUNK_SIZE = 300
 CHUNK_OVERLAP = 50
 MAX_RESPONSE_LEN = 256
 
-# === Load & process the FAQ data ===
+# === Load & process everything inside cache ===
 @st.cache_resource
-def load_docs():
+def load_pipeline_and_db():
+    # Load and split the document
     loader = TextLoader(FAQ_FILE)
     documents = loader.load()
     splitter = RecursiveCharacterTextSplitter(chunk_size=CHUNK_SIZE, chunk_overlap=CHUNK_OVERLAP)
-    return splitter.split_documents(documents)
+    docs = splitter.split_documents(documents)
 
-# === Create Vector Store ===
-@st.cache_resource
-def create_vector_store(docs):
+    # Create vector store
     embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
-    return FAISS.from_documents(docs, embeddings)
+    db = FAISS.from_documents(docs, embeddings)
+    retriever = db.as_retriever()
 
-# === Load Model Pipeline ===
-@st.cache_resource
-def load_model():
-    return pipeline("text2text-generation", model=GENERATION_MODEL)
+    # Load local/public HF model (no token needed)
+    generator = pipeline("text2text-generation", model=MODEL_NAME)
 
-# === Generate answer ===
+    return retriever, generator
+
+# === Answer Generation ===
 def get_answer(query, retriever, generator):
     docs = retriever.get_relevant_documents(query)
     context = "\n".join([doc.page_content for doc in docs])
@@ -45,14 +44,11 @@ def main():
     st.set_page_config(page_title="RAG Chatbot", page_icon="💬")
     st.title("💬 FAQ Chatbot (LangChain + HuggingFace)")
 
-    # Load data/model
-    with st.spinner("Loading documents and models..."):
-        docs = load_docs()
-        db = create_vector_store(docs)
-        retriever = db.as_retriever()
-        generator = load_model()
+    # Load once and reuse
+    with st.spinner("Loading model and database..."):
+        retriever, generator = load_pipeline_and_db()
 
-    # UI for user query
+    # User input
     query = st.text_input("Ask a question based on the FAQ:")
     if query:
         with st.spinner("Generating answer..."):
