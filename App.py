@@ -24,7 +24,7 @@ def load_docs():
 # === Create Vector Store ===
 @st.cache_resource
 def create_vector_store(docs):
-    embeddings = HuggingFaceEmbeddings(model_name=EMBEDDING_MODEL)
+    embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
     return FAISS.from_documents(docs, embeddings)
 
 # === Load Model Pipeline ===
