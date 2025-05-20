@@ -1,0 +1,14 @@
+Q: What is LangChain?
+A: LangChain is a framework for developing applications powered by language models.
+
+Q: What is RAG?
+A: Retrieval-Augmented Generation (RAG) combines external knowledge with language models to give better answers.
+
+Q: What is FAISS?
+A: FAISS is a library for efficient similarity search and clustering of dense vectors.
+
+Q: What is HuggingFace?
+A: HuggingFace provides free and open access to transformer models for NLP.
+
+Q: How does a chatbot work?
+A: A chatbot takes user input, processes it using a model, and returns a response.
