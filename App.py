@@ -34,7 +34,7 @@ retriever = db.as_retriever()
 # ✅ Use a model that supports inference on Hugging Face Hub
 # You can replace this with another model like "tiiuae/falcon-7b-instruct"
 llm = HuggingFaceHub(
-    repo_id="google/flan-t5-large",  # Flan-T5-base may not work reliably
+    repo_id="tiiuae/falcon-7b-instruct",  # Flan-T5-base may not work reliably
     model_kwargs={"temperature": 0.5, "max_length": 256},
     huggingfacehub_api_token=huggingface_token
 )
